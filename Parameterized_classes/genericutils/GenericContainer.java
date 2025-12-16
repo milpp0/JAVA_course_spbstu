@@ -1,8 +1,10 @@
 package genericutils;
 
+import entities.Vehicle;
+
 /**
  * Утилитный параметризованный класс для демонстрации
- * различных сценариев использования instanceof
+ * различных сценариев использования instanceof и wildcards
  * @param <T> тип хранимых данных
  */
 public class GenericContainer<T> {
@@ -21,7 +23,6 @@ public class GenericContainer<T> {
      * @return true если значение является Number
      */
     public boolean isNumber() {
-        // Проверка с raw type (без каста)
         return value instanceof Number;
     }
     
@@ -79,5 +80,27 @@ public class GenericContainer<T> {
      */
     public boolean isIntegerArray() {
         return value instanceof Integer[];
+    }
+    
+    /**
+     * Пример метода с <? extends T> для чтения
+     * @param container контейнер с Number или его подклассами
+     * @return сумма значений
+     */
+    public static double sumNumbers(GenericContainer<? extends Number> container) {
+        Number num = container.getValue();
+        return num != null ? num.doubleValue() : 0.0;
+    }
+    
+    /**
+     * Пример метода с <? super T> для записи
+     * @param container контейнер для Vehicle или его суперклассов
+     * @param vehicle транспортное средство для добавления
+     */
+    public static <T extends Vehicle> void setVehicle(
+            GenericContainer<? super T> container, T vehicle) {
+        // Можем установить любое транспортное средство типа T
+        System.out.println("Установка транспортного средства: " + vehicle.getName());
+        // В реальной реализации здесь было бы сохранение значения
     }
 }
